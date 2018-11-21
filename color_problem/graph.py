@@ -10,7 +10,7 @@ import os
 import matplotlib.pyplot as plt
 import networkx as nx
 import logging.handlers
-from coloration import Coloration
+from color_problem.coloration import Coloration
 
 PYTHON_LOGGER = logging.getLogger(__name__)
 if not os.path.exists("log"):
@@ -102,20 +102,18 @@ class Graph:
         """
         graph_nx = nx.Graph()
         labels = {}
-        node_color = []
         for node in self.graph:
             for neighbour in self.graph[node]:
                 graph_nx.add_edge(node, neighbour)
-            labels[node] = node
             color = 'gray' if coloration.get_node_color(node) is None else coloration.get_node_color(node)
-            node_color.append(color)
-        nx.draw(graph_nx, node_color=node_color, with_labels=True)
+            labels[node] = node + " " + color
+        nx.draw(graph_nx, with_labels=True, labels=labels)
         plt.axis('off')
         plt.show()
 
 
 if __name__ == "__main__":
-    g = Graph("instances/3c_faux.txt")
+    g = Graph("../instances/3c_faux.txt")
     coloration = Coloration()
     coloration.color_node("s1", coloration.BLUE)
     coloration.color_node("s2", coloration.GREEN)
