@@ -120,7 +120,7 @@ class Sat:
 
 
 if __name__ == "__main__":
-    sat = Sat("instances/3sat_vrais.txt")
+    sat = Sat("instances/3sat_faux2.txt")
     print(sat)
     sat.generate_graph_file("out.txt")
     sat_color = Graph("out.txt")
