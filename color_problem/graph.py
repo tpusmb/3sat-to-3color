@@ -50,20 +50,48 @@ class Graph:
 
     def add_node(self, node_name, links):
         """
-        Function to add a node to the graph
+        Function to add a node to the graph with bidirectional link
+        If you add S1 link with S2 this function will add the S2 node in the graph
+        Note: You can add new link on a node just by calling this function a new time
         :param node_name: (string) Key name of the node
         :param links: (list of string) All the nodes linked to the created node
         """
 
+        # control if the input node is in the graph
         if node_name not in self.graph:
             self.graph[node_name] = links
-        else:
-            self.graph[node_name].extend(links)
+
         for node in links:
+            # Control if the node in link is not already in the input node
+            if node not in self.graph[node_name]:
+                self.graph[node_name].append(node)
+
+            # Add the bidirectional link
             if node not in self.graph:
                 self.graph[node] = [node_name]
-            else:
+            elif node_name not in self.graph[node]:
                 self.graph[node].append(node_name)
+
+    def generate_graph_file(self, output_file_name):
+        """
+
+        :param output_file_name:
+        :return:
+        """
+        with open(output_file_name, "w") as f:
+            f.write("Graph{\n")
+            f.write(' '.join(self.get_nodes()))
+            f.write('\n')
+            writen_link = []
+            for node in self.graph:
+                for neighbour in self.graph[node]:
+                    str_link = "{}-{}".format(node, neighbour)
+                    str_link_oposit = "{}-{}".format(neighbour, node)
+                    if str_link not in writen_link and str_link_oposit not in writen_link:
+                        f.write("{}\n".format(str_link))
+                        writen_link.extend([str_link, str_link_oposit])
+            f.write("}")
+        PYTHON_LOGGER.info("Export done !")
 
     def get_nodes(self):
         """

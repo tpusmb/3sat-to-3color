@@ -17,8 +17,8 @@ Options:
 """
 
 from __future__ import absolute_import
-from graph import Graph
-from coloration import Coloration
+from .graph import Graph
+from .coloration import Coloration
 import os
 import itertools
 import logging.handlers
