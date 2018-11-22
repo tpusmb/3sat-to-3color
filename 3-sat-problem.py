@@ -5,7 +5,7 @@ from __future__ import absolute_import
 import os
 import timeit
 import logging.handlers
-from color_problem import Graph, Coloration
+from color_problem import Graph, Coloration, solve_back_tracking
 
 PYTHON_LOGGER = logging.getLogger(__name__)
 if not os.path.exists("log"):
@@ -47,8 +47,8 @@ class Sat:
             nb_literal = int(nb_literal)
             # Generate all the boolean literal
             for literal in range(1, nb_literal + 1):
-                self.graph.add_node(str(literal), ["-{}".format(literal)])
-                self.graph.add_node("O", [str(literal), "-{}".format(literal)])
+                self.graph.add_node(str(literal), ["not{}".format(literal)])
+                self.graph.add_node("O", [str(literal), "not{}".format(literal)])
 
             current_added_node = 1
             # Read all clause
@@ -57,7 +57,17 @@ class Sat:
                 current_added_node = self.__generate_gadget(current_added_node, *self.clauses[-1])
 
     def __generate_gadget(self, start_node_number, literal_1, literal_2, literal_3):
+        """
 
+        :param start_node_number:
+        :param literal_1:
+        :param literal_2:
+        :param literal_3:
+        :return:
+        """
+        literal_1 = literal_1.replace("-", "not")
+        literal_2 = literal_2.replace("-", "not")
+        literal_3 = literal_3.replace("-", "not")
         # Generate S start_node_number, S start_node_number + 1, ..., S start_node_number + 4
         gadget = ["S{}".format(number) for number in range(start_node_number, start_node_number + 5)]
         # Triangle S1, S2, S3
@@ -93,7 +103,7 @@ class Sat:
         :param output_file_name:
         :return:
         """
-
+        self.graph.generate_graph_file(output_file_name)
 
     def __str__(self):
 
@@ -112,4 +122,6 @@ class Sat:
 if __name__ == "__main__":
     sat = Sat("instances/3sat_vrais.txt")
     print(sat)
-    sat.display_graph()
+    sat.generate_graph_file("out.txt")
+    sat_color = Graph("out.txt")
+    print(solve_back_tracking(sat_color))
