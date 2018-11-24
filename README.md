@@ -1,4 +1,4 @@
-# probleme-3-coloration
+# 3-sat-to-3color
 
 
 ## Installation.
@@ -24,22 +24,9 @@ If you want to exit your virtualenv:
 
 ## Usage
 
-### Run Specific algorithm
+### Launch the reduction
 
-To run a specific algorithm
+To the 3 sat to 3 color graph script
 
 
-    python problem_3_coloration.py mygraph.txt --generate-and-test
-    python problem_3_coloration.py mygraph.txt --solve-back-tracking
-
-This command will run the 2 algorithm    
-
-    python problem_3_coloration.py mygraph.txt --generate-and-test --solve-back-tracking
-
-If you want to visualise the solution you just have to add --show flag
-
-    python problem_3_coloration.py mygraph.txt --generate-and-test --solve-back-tracking --show
-
-This line will run generate and test and show the graph color. Then run solve back tracking and show the graph color
-
-    
+    python 3-sat-problem.py my-3-sat-problem.txt output-3-color-graph.txt
